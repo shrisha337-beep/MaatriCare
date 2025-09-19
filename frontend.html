@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MaatriCare</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&family=Dancing+Script:wght@600&display=swap" rel="stylesheet">
+  <style>
+    /* Global reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: #333;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animated gradient background */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: linear-gradient(270deg, #a8e6cf, #ffd3b6, #ffaaa5, #dcedc1);
+      background-size: 800% 800%;
+      animation: gradientFlow 20s ease infinite;
+      z-index: -2;
+    }
+
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating blobs */
+    .blob {
+      position: absolute;
+      width: 250px; height: 250px;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      animation: floaty 12s ease-in-out infinite;
+      z-index: -1;
+    }
+
+    .blob:nth-child(1) { top: 10%; left: 15%; animation-delay: 0s; }
+    .blob:nth-child(2) { bottom: 15%; right: 10%; animation-delay: 3s; }
+    .blob:nth-child(3) { top: 40%; right: 30%; animation-delay: 6s; }
+
+    @keyframes floaty {
+      0%, 100% { transform: translateY(0) translateX(0); }
+      50% { transform: translateY(-30px) translateX(20px); }
+    }
+
+    header {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: #fff;
+    }
+
+    header h1 {
+      font-family: 'Dancing Script', cursive;
+      font-size: 3.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+    }
+
+    header p {
+      font-size: 1.2rem;
+      font-weight: 500;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 0.8rem 2rem;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      background: #2ecc71;
+      color: white;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+
+    .btn:hover {
+      background: #27ae60;
+      transform: scale(1.05);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
+
+    /* Features section */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+      padding: 3rem 2rem;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.9);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    .card h3 {
+      margin-bottom: 1rem;
+      font-size: 1.5rem;
+      color: #27ae60;
+    }
+
+    .card p {
+      font-size: 1rem;
+      color: #555;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating blobs -->
+  <div class="blob"></div>
+  <div class="blob"></div>
+  <div class="blob"></div>
+
+  <header>
+    <h1>MaatriCare </h1>
+    <p>Because Maa deserves more than just care 💚</p>
+    <button class="btn">Get Started</button>
+  </header>
+
+  <section class="features">
+    <div class="card">
+      <h3>Personalized Guidance</h3>
+      <p>AI-driven health tips tailored for every stage of pregnancy.</p>
+    </div>
+    <div class="card">
+      <h3>Easy Tracking</h3>
+      <p>Stay on top of checkups, milestones, and medical needs.</p>
+    </div>
+    <div class="card">
+      <h3> Community Support</h3>
+      <p>Connect with experts and other moms-to-be for shared experiences.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 MaatriCare. Crafted with love 🌸</p>
+  </footer>
+</body>
+</html>
