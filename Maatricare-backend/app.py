@@ -1,0 +1,42 @@
+from flask import Flask, jsonify, request # type: ignore
+from flask_cors import CORS # type: ignore
+from flask_sqlalchemy import SQLAlchemy # type: ignore
+app = Flask(__name__)
+CORS(app)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///maatricare.db'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db = SQLAlchemy(app)
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'username': self.username,
+            'email': self.email
+        }
+
+# Ensure tables are created
+with app.app_context():
+    db.create_all()
+
+@app.route('/api/users', methods=['GET'])
+def get_users():
+    users = User.query.all()
+    return jsonify([user.to_dict() for user in users])
+@app.route('/api/users', methods=['POST'])
+def create_user():
+    data = request.get_json()
+    new_user = User(
+        username=data['username'],
+        email=data['email']
+    )
+    db.session.add(new_user)
+    db.session.commit()
+    return jsonify(new_user.to_dict()), 201
+@app.route('/')
+def home():
+    return jsonify({"message": "MaatriCare backend is running 🚀"})
+
