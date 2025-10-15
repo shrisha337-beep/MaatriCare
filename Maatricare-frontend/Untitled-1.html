@@ -416,94 +416,84 @@
   </div>
 
   <script>
-    // Page navigation functions
-    function showPage(pageId) {
-      // Hide all pages
-      document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-      });
-      
-      // Show selected page with animation
-      setTimeout(() => {
-        document.getElementById(pageId).classList.add('active');
-      }, 100);
-    }
+    async function handleSignup(event) {
+  event.preventDefault();
 
-    function showHome() {
-      showPage('home');
-    }
+  const username = document.getElementById('signupName').value;
+  const email = document.getElementById('signupEmail').value;
+  const password = document.getElementById('signupPassword').value;
+  const confirmPassword = document.getElementById('confirmPassword').value;
 
-    function showLogin() {
-      showPage('login');
-    }
+  if (!username || !email || !password || !confirmPassword) {
+    alert('Please fill in all fields');
+    return;
+  }
 
-    function showSignup() {
-      showPage('signup');
-    }
+  if (password !== confirmPassword) {
+    alert('Passwords do not match');
+    return;
+  }
 
-    function showDashboard() {
-      showPage('dashboard');
-    }
-
-    // Form handling
-    function handleLogin(event) {
-      event.preventDefault();
-      
-      const email = document.getElementById('loginEmail').value;
-      const password = document.getElementById('loginPassword').value;
-      
-      // Simple validation (in a real app, this would connect to a backend)
-      if (email && password) {
-        // Store user session (in memory for this demo)
-        sessionStorage.setItem('userEmail', email);
-        showDashboard();
-      } else {
-        alert('Please fill in all fields');
-      }
-    }
-
-    function handleSignup(event) {
-      event.preventDefault();
-      
-      const name = document.getElementById('signupName').value;
-      const email = document.getElementById('signupEmail').value;
-      const password = document.getElementById('signupPassword').value;
-      const confirmPassword = document.getElementById('confirmPassword').value;
-      
-      // Validation
-      if (!name || !email || !password || !confirmPassword) {
-        alert('Please fill in all fields');
-        return;
-      }
-      
-      if (password !== confirmPassword) {
-        alert('Passwords do not match');
-        return;
-      }
-      
-      if (password.length < 6) {
-        alert('Password must be at least 6 characters long');
-        return;
-      }
-      
-      // Store user info and redirect to dashboard
-      sessionStorage.setItem('userEmail', email);
-      sessionStorage.setItem('userName', name);
-      showDashboard();
-    }
-
-    function logout() {
-      // Clear session
-      sessionStorage.clear();
-      showHome();
-    }
-
-    // Check if user is already logged in on page load
-    window.addEventListener('load', () => {
-      if (sessionStorage.getItem('userEmail')) {
-        showDashboard();
-      }
+  try {
+    const response = await fetch("http://127.0.0.1:5000/api/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, email, password }),
     });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.message || "Signup failed");
+    }
+
+    const data = await response.json();
+    alert("Account created successfully!");
+    console.log("User created:", data);
+    showLogin();
+  } catch (error) {
+    alert("Error: " + error.message);
+  }
+}
+async function handleLogin(event) {
+  event.preventDefault();
+
+  const email = document.getElementById("loginEmail").value;
+  const password = document.getElementById("loginPassword").value;
+
+  if (!email || !password) {
+    alert("Please enter both email and password");
+    return;
+  }
+
+  try {
+    const response = await fetch("http://127.0.0.1:5000/api/users");
+    const users = await response.json();
+
+    const user = users.find(
+      (u) => u.email === email
+    );
+
+    if (!user) {
+      alert("User not found! Please sign up first.");
+      return;
+    }
+
+    // ⚠️ For demo purposes only
+    // Normally you'd verify password in backend, but we’ll skip that today
+    alert(`Welcome back, ${user.username}!`);
+    sessionStorage.setItem("userEmail", user.email);
+    showDashboard();
+  } catch (error) {
+    alert("Login failed. Try again later.");
+  }
+}
+function goToSignup() {
+    window.location.href = "signup.html";
+  }
+  
+
   </script>
 </body>
 </html>
